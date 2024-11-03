@@ -7,10 +7,16 @@ const PerpetualOutput = require('./perpetual');
 const app = express();
 const port = process.env.PORT || 3000;
 
-// 加载字体
+// Determine the correct font path
+const fontPath = process.env.VERCEL 
+  ? path.join(process.cwd(), 'public', 'simhei.ttf')
+  : 'simhei.ttf';
+
+// Load the font
 let fontLoaded;
-PImage.registerFont('simhei.ttf', 'SimHei').load(() => {
+PImage.registerFont(fontPath, 'SimHei').load(() => {
   fontLoaded = true;
+  console.log('Font loaded successfully');
 });
 
 app.get('/lunar/getpic', async (req, res) => {
