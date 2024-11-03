@@ -10,27 +10,20 @@ const port = process.env.PORT || 3000;
 // Determine the correct font path
 const fontPath = process.env.VERCEL 
   ? path.join(process.cwd(), 'public', 'simhei.ttf')
-  : 'simhei.ttf';
+  : path.join(__dirname, 'simhei.ttf');
 
-// Load the font
-let fontLoaded;
-PImage.registerFont(fontPath, 'SimHei').load(() => {
-  fontLoaded = true;
-  console.log('Font loaded successfully');
-});
+// Register and load the font synchronously
+const font = PImage.registerFont(fontPath, 'SimHei');
+font.loadSync();
 
 app.get('/lunar/getpic', async (req, res) => {
-  if (!fontLoaded) {
-    return res.status(503).send('Font not loaded yet. Please try again.');
-  }
-
   const img = PImage.make(400, 300);
   const ctx = img.getContext('2d');
 
   ctx.fillStyle = 'white';
   ctx.fillRect(0, 0, 400, 300);
 
-  ctx.font = '20px SimHei';
+  ctx.font = "20pt 'SimHei'";
   ctx.fillStyle = 'black';
 
   let y = 30;
